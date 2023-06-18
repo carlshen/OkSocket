@@ -1,17 +1,21 @@
 package com.xuhao.didi.oksocket;
 
+import static android.widget.Toast.LENGTH_SHORT;
+
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.angcyo.oksocketdemo.R;
 import com.xuhao.didi.core.iocore.interfaces.IPulseSendable;
 import com.xuhao.didi.core.iocore.interfaces.ISendable;
 import com.xuhao.didi.core.pojo.OriginalData;
@@ -28,8 +32,6 @@ import com.xuhao.didi.socket.client.sdk.client.connection.IConnectionManager;
 import com.xuhao.didi.socket.client.sdk.client.connection.NoneReconnect;
 
 import java.nio.charset.Charset;
-
-import static android.widget.Toast.LENGTH_SHORT;
 
 /**
  * Created by Tony on 2017/10/24.

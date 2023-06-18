@@ -1,28 +1,33 @@
-apply plugin: 'com.android.application'
+plugins {
+    id 'com.android.application'
+    id 'org.jetbrains.kotlin.android'
+}
 
 android {
-    signingConfigs {
-        release {
-            keyAlias 'xuhao'
-            keyPassword '123456'
-            storeFile file('/Users/xuhao/Documents/publish_project/oksocket/keystore/release')
-            storePassword '123456'
-        }
-    }
-    compileSdkVersion 26
-    buildToolsVersion '26.0.2'
+    namespace 'com.angcyo.oksocketdemo'
+    compileSdk 33
+
     defaultConfig {
-        applicationId "com.xuhao.android.oksocket"
-        minSdkVersion 14
-        targetSdkVersion 26
+        applicationId "com.angcyo.oksocketdemo"
+        minSdk 21
+        targetSdk 33
         versionCode 1
         versionName "1.0"
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
         release {
             minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    kotlinOptions {
+        jvmTarget = '1.8'
     }
     lintOptions {
         abortOnError false
@@ -30,12 +35,17 @@ android {
 }
 
 dependencies {
-    compile fileTree(include: ['*.jar'], dir: 'libs')
-    compile 'com.android.support:appcompat-v7:26.1.0'
-    compile 'com.android.support:design:26.1.0'
-    compile 'com.google.code.gson:gson:2.8.0'
-//        api 'com.tonystark.android:socket:latest.release'
-//        api 'com.tonystark.android:socket-server:latest.release'
-        api project(path: ':socket-client')
-        api project(path: ':socket-server')
+
+    implementation 'androidx.core:core-ktx:1.9.0'
+    implementation 'androidx.appcompat:appcompat:1.6.1'
+    implementation 'com.google.android.material:material:1.8.0'
+    implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
+    testImplementation 'junit:junit:4.13.2'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.5'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
+
+    implementation 'com.google.code.gson:gson:2.8.0'
+    implementation project(':socket-client')
+    implementation project(':socket-server')
+    implementation project(':socket-common-interface')
 }

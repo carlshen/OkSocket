@@ -3,15 +3,17 @@ package com.xuhao.didi.oksocket;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.SwitchCompat;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SwitchCompat;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.angcyo.oksocketdemo.R;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
@@ -31,14 +33,15 @@ import com.xuhao.didi.socket.client.sdk.client.action.SocketActionAdapter;
 import com.xuhao.didi.socket.client.sdk.client.connection.IConnectionManager;
 import com.xuhao.didi.socket.client.sdk.client.connection.NoneReconnect;
 
-import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 
 
 public class ComplexDemoActivity extends AppCompatActivity {
 
+    private final LogAdapter mSendLogAdapter = new LogAdapter();
+    private final LogAdapter mReceLogAdapter = new LogAdapter();
     private ConnectionInfo mInfo;
-
     private Button mConnect;
     private IConnectionManager mManager;
     private EditText mIPET;
@@ -49,14 +52,7 @@ public class ComplexDemoActivity extends AppCompatActivity {
     private Button mMenualPulse;
     private Button mClearLog;
     private SwitchCompat mReconnectSwitch;
-
-    private RecyclerView mSendList;
-    private RecyclerView mReceList;
-
-    private LogAdapter mSendLogAdapter = new LogAdapter();
-    private LogAdapter mReceLogAdapter = new LogAdapter();
-
-    private SocketActionAdapter adapter = new SocketActionAdapter() {
+    private final SocketActionAdapter adapter = new SocketActionAdapter() {
 
         @Override
         public void onSocketConnectionSuccess(ConnectionInfo info, String action) {
@@ -107,7 +103,7 @@ public class ComplexDemoActivity extends AppCompatActivity {
 
         @Override
         public void onSocketReadResponse(ConnectionInfo info, String action, OriginalData data) {
-            String str = new String(data.getBodyBytes(), Charset.forName("utf-8"));
+            String str = new String(data.getBodyBytes(), StandardCharsets.UTF_8);
             JsonObject jsonObject = new JsonParser().parse(str).getAsJsonObject();
             int cmd = jsonObject.get("cmd").getAsInt();
             if (cmd == 54) {//登陆成功
@@ -132,18 +128,15 @@ public class ComplexDemoActivity extends AppCompatActivity {
         public void onSocketWriteResponse(ConnectionInfo info, String action, ISendable data) {
             byte[] bytes = data.parse();
             bytes = Arrays.copyOfRange(bytes, 4, bytes.length);
-            String str = new String(bytes, Charset.forName("utf-8"));
+            String str = new String(bytes, StandardCharsets.UTF_8);
             JsonObject jsonObject = new JsonParser().parse(str).getAsJsonObject();
             int cmd = jsonObject.get("cmd").getAsInt();
-            switch (cmd) {
-                case 54: {
-                    String handshake = jsonObject.get("handshake").getAsString();
-                    logSend("发送握手数据(Handshake Sending):" + handshake);
-                    mManager.getPulseManager().pulse();
-                    break;
-                }
-                default:
-                    logSend(str);
+            if (cmd == 54) {
+                String handshake = jsonObject.get("handshake").getAsString();
+                logSend("发送握手数据(Handshake Sending):" + handshake);
+                mManager.getPulseManager().pulse();
+            } else {
+                logSend(str);
             }
         }
 
@@ -151,7 +144,7 @@ public class ComplexDemoActivity extends AppCompatActivity {
         public void onPulseSend(ConnectionInfo info, IPulseSendable data) {
             byte[] bytes = data.parse();
             bytes = Arrays.copyOfRange(bytes, 4, bytes.length);
-            String str = new String(bytes, Charset.forName("utf-8"));
+            String str = new String(bytes, StandardCharsets.UTF_8);
             JsonObject jsonObject = new JsonParser().parse(str).getAsJsonObject();
             int cmd = jsonObject.get("cmd").getAsInt();
             if (cmd == 14) {
@@ -159,6 +152,8 @@ public class ComplexDemoActivity extends AppCompatActivity {
             }
         }
     };
+    private RecyclerView mSendList;
+    private RecyclerView mReceList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -281,9 +276,7 @@ public class ComplexDemoActivity extends AppCompatActivity {
                 long frequency = 0;
                 try {
                     frequency = Long.parseLong(frequencyStr);
-                    OkSocketOptions okOptions = new OkSocketOptions.Builder(mManager.getOption())
-                            .setPulseFrequency(frequency)
-                            .build();
+                    OkSocketOptions okOptions = new OkSocketOptions.Builder(mManager.getOption()).setPulseFrequency(frequency).build();
                     mManager.option(okOptions);
                 } catch (NumberFormatException e) {
                 }

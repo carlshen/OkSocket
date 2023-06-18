@@ -3,14 +3,15 @@ package com.xuhao.didi.oksocket.adapter;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.xuhao.didi.oksocket.R;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.angcyo.oksocketdemo.R;
 import com.xuhao.didi.oksocket.data.LogBean;
 
 import java.util.ArrayList;
