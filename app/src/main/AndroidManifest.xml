@@ -30,22 +30,26 @@
         <activity
             android:name="com.xuhao.didi.oksocket.ComplexDemoActivity"
             android:exported="true"
+            android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.Light" />
 
         <activity
             android:name="com.xuhao.didi.oksocket.SimpleDemoActivity"
             android:exported="true"
+            android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.Light" />
 
         <activity
             android:name="com.xuhao.didi.oksocket.ServerAdminActivity"
             android:exported="true"
+            android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.Light" />
 
 
         <activity
             android:name="com.xuhao.didi.oksocket.DemoActivity"
             android:exported="true"
+            android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.Light">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

@@ -100,8 +100,9 @@ public class ReaderImpl extends AbsReader {
             }
             mStateSender.sendBroadcast(IOAction.ACTION_READ_COMPLETE, originalData);
         } catch (Exception e) {
-            ReadException readException = new ReadException(e);
-            throw readException;
+            SLog.e("read Exception: " + e.getMessage());
+//            ReadException readException = new ReadException(e);
+//            throw readException;
         }
     }
 
